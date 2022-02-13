@@ -11,35 +11,23 @@ public:
 
 LinkedList *sumOfLinkedLists(LinkedList *linkedListOne,
                              LinkedList *linkedListTwo) {
-  int sum = 0, mult = 1, x = 0;
-	LinkedList *cur = linkedListOne;
+  LinkedList * nodeOne = linkedListOne, *nodeTwo = linkedListTwo;
+	int carry = 0, sum = 0;
 	LinkedList *result = new LinkedList(0);
-	while(cur != nullptr)
+	LinkedList  *current = result;
+	while(nodeOne != nullptr || nodeTwo != nullptr || carry != 0)
 	{
-		sum += (cur->value * mult);
-		mult *= 10;
-		cur = cur->next;
+		int val1 = nodeOne != nullptr ? nodeOne->value: 0;
+		int val2 = nodeTwo != nullptr ? nodeTwo->value: 0;
+		sum = val1 + val2 + carry;
+	    carry = sum / 10;
+		sum = sum % 10;
+		LinkedList *newNode = new LinkedList(sum);
+		current -> next = newNode;
+		current = current -> next;
+		nodeOne = nodeOne != nullptr ? nodeOne -> next: nullptr;
+		nodeTwo = nodeTwo != nullptr ? nodeTwo -> next: nullptr;
 	}
-	cur = linkedListTwo;
-	mult = 1;
-	while(cur != nullptr)
-	{
-		sum += (cur->value * mult);
-		mult *= 10;
-		cur = cur->next;
-	}
-	cur = result;
-	mult=10;
-	while(sum != 0)
-	{
-		x = sum % mult;
-		sum -= x;
-		mult *= 10;
-		LinkedList * newNode = new LinkedList( x/(mult/100) );
-		cur->next = newNode;
-		cur = cur -> next;
-	}
-	if(result->next != nullptr)
-  	return result->next;
-	return result;
+	
+  return result -> next;
 }
